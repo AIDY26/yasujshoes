@@ -86,5 +86,21 @@ add_action( 'wp_head', static function (): void {
 		document.documentElement.setAttribute('data-theme', t);
 	})();
 	</script>
+	<?php if ( lc_intro_on() ) : ?>
+	<script>
+	/* the home page opens on the size-dial loader (template-parts/intro.php, src/js/modules/intro.js) */
+	document.documentElement.classList.add('has-intro');
+	</script>
 	<?php
+	endif;
+}, 1 );
+
+/** The loading intro: home page only, when «صفحه ورود» is on (پیشخوان ← تنظیمات کلی). */
+function lc_intro_on(): bool {
+	return is_front_page() && function_exists( 'lc_home' ) && ! empty( lc_home()['general']['intro'] );
+}
+add_action( 'wp_body_open', static function (): void {
+	if ( lc_intro_on() ) {
+		get_template_part( 'template-parts/intro' );
+	}
 }, 1 );

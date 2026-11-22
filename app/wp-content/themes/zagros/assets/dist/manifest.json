@@ -84,12 +84,12 @@
     "src": "src/assets/fonts/KalamehWeb-Bold.woff2"
   },
   "src/js/wp.js": {
-    "file": "assets/wp-BifBwm1y.js",
+    "file": "assets/wp-NqCkikny.js",
     "name": "wp",
     "src": "src/js/wp.js",
     "isEntry": true,
     "css": [
-      "assets/wp-B_Jzc8qv.css"
+      "assets/wp-DfbGFI3a.css"
     ],
     "assets": [
       "assets/bricolage-grotesque-vietnamese-opsz-normal-D9N6E8K1.woff2",

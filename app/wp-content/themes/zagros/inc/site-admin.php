@@ -36,6 +36,7 @@ function lc_home_defaults(): array {
 		'general'  => [
 			'instagram'     => (string) $mod( 'lc_instagram_url', 'https://instagram.com/' ),
 			'story_seconds' => 5,
+			'intro'         => 1,
 			'enamad'        => '',
 			'enamad_slot'   => 1,
 		],
@@ -311,6 +312,7 @@ function lc_home_screen(): void {
 				<?php
 				lc_field_text( 'lc[general][instagram]', $h['general']['instagram'], 'آدرس صفحه‌ی اینستاگرام', 'در هیرو، بخش اینستاگرام و پایین صفحه استفاده می‌شود.', 'url', [ 'dir' => 'ltr' ] );
 				lc_field_text( 'lc[general][story_seconds]', $h['general']['story_seconds'], 'مدت نمایش هر استوری (ثانیه)', '', 'number', [ 'min' => 2, 'max' => 20, 'step' => 0.5 ] );
+				lc_field_toggle( 'lc[general][intro]', $h['general']['intro'], 'صفحه ورود: صفحه اصلی تا آماده شدن عکس‌های اول با دایره سایز باز شود' );
 				?>
 				<h2>نماد اعتماد الکترونیکی (اینماد)</h2>
 				<?php
@@ -364,6 +366,7 @@ add_action( 'admin_post_lc_save_home', static function (): void {
 		'general'  => [
 			'instagram'     => esc_url_raw( (string) ( $in['general']['instagram'] ?? '' ) ),
 			'story_seconds' => $num( $in['general']['story_seconds'] ?? '', 2, 20, 5 ),
+			'intro'         => (int) ! empty( $in['general']['intro'] ),
 			'enamad'        => lc_clean_enamad( (string) ( $in['general']['enamad'] ?? '' ) ),
 			'enamad_slot'   => (int) ! empty( $in['general']['enamad_slot'] ),
 		],
