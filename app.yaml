@@ -1,0 +1,14 @@
+# Wasmer Edge app: the yasujshoes demo store (WordPress + WooCommerce), deployed from GitHub
+# (AIDY26/yasujshoes, branch main): every push to main redeploys it.
+# The repo is served at /app, with WordPress in /app/app (the dashboard's start command:
+# phpix -S 0.0.0.0:8080 -t /app/app).
+# Wasmer creates the MySQL database on the first deploy and passes DB_HOST, DB_PORT, DB_NAME,
+# DB_USERNAME and DB_PASSWORD to the app; app/wp-config.php reads them, and the first visit
+# loads db/yasujshoes.sql into it. No volume: everything ships in this repo (a demo, not a live shop).
+kind: wasmer.io/App.v0
+name: yasujshoes
+owner: aidenlopez268
+package: .
+capabilities:
+  database:
+    engine: mysql

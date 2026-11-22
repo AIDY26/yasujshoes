@@ -1,0 +1,68 @@
+/* Promo popup: centred modal on desktop, bottom sheet on phones. Follows the light/dark theme.
+   Layouts: .has-img (photo + text), .is-text-only, .is-image-only (photo, optional button). */
+html.lpop-open { overflow: hidden; }
+.lpop { position: fixed; inset: 0; z-index: 980; display: grid; place-items: center; padding: 24px; }
+.lpop__scrim { position: absolute; inset: 0; background: var(--scrim, rgba(0, 0, 0, .6)); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lpop__card {
+	position: relative;
+	display: grid;
+	width: min(440px, 100%);
+	max-height: calc(100svh - 48px);
+	overflow: hidden;
+	border-radius: var(--r-lg, 32px);
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid var(--line);
+	box-shadow: 0 40px 100px -30px rgba(0, 0, 0, .7);
+	outline: none;
+}
+.lpop__card.has-img { width: min(780px, 100%); grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); }
+.lpop__card.is-image-only { width: auto; max-width: min(560px, 100%); }
+
+.lpop__media { position: relative; display: block; margin: 0; background: var(--surface-2); }
+.has-img .lpop__media { min-height: 100%; }
+.has-img .lpop__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.is-image-only .lpop__media img { display: block; width: auto; max-width: 100%; height: auto; max-height: calc(100svh - 48px - var(--lpop-btn, 0px)); margin-inline: auto; }
+.is-image-only:has(.lpop__body) { --lpop-btn: 88px; }
+
+.lpop__body { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; padding: clamp(28px, 4vw, 44px); padding-top: 52px; overflow-y: auto; }
+.is-image-only .lpop__body { padding: 16px; }
+.is-image-only .lpop__actions { margin-top: 0; }
+
+.lpop__grip { display: none; }
+.lpop__close { position: absolute; z-index: 2; top: 12px; inset-inline-end: 12px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: none; color: var(--text-2); cursor: pointer; transition: background-color .2s, transform .16s cubic-bezier(.23, 1, .32, 1); }
+.is-image-only .lpop__close { background: rgba(0, 0, 0, .5); color: #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lpop__close:active { transform: scale(.92); }
+.lpop__close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+.lpop__eyebrow { margin: 0; font-size: 13px; font-weight: 700; color: var(--accent, var(--red)); }
+.lpop__title { margin: 0; font-family: var(--f-display); font-weight: 900; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.2; text-wrap: balance; }
+.lpop__text { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.9; white-space: pre-line; }
+.lpop__code { display: flex; align-items: stretch; width: 100%; margin-top: 6px; border: 1.5px dashed var(--line-2); border-radius: 16px; overflow: hidden; }
+.lpop__code code { flex: 1; display: grid; place-items: center; min-width: 0; padding: 12px; font: 700 18px/1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .12em; color: var(--text); user-select: all; overflow-wrap: anywhere; }
+.lpop__code button { flex: none; padding-inline: 18px; border: 0; border-inline-start: 1.5px dashed var(--line-2); background: var(--surface-2); color: var(--text); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color .2s, color .2s; }
+.lpop__code button.is-done { background: var(--accent, var(--red)); color: #fff; }
+.lpop__actions { display: flex; align-items: center; gap: 16px; width: 100%; margin-top: 10px; }
+.lpop__actions:empty { display: none; }
+.lpop__cta.btn { flex: 1; }
+.lpop__later { border: 0; background: none; padding: 10px 4px; color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; }
+.lpop__later:hover { color: var(--text); }
+.lpop :focus-visible { outline: 2px solid var(--accent, var(--red)); outline-offset: 2px; }
+.lpop .lpop__card:focus-visible { outline: none; }
+@media (hover: hover) and (pointer: fine) {
+	.lpop__close:hover { background: var(--surface-2); color: var(--text); }
+	.is-image-only .lpop__close:hover { background: rgba(0, 0, 0, .7); color: #fff; }
+}
+
+@media (max-width: 640px) {
+	.lpop { padding: 0; place-items: end stretch; }
+	.lpop__card, .lpop__card.has-img, .lpop__card.is-image-only { width: 100%; max-width: none; max-height: 92svh; grid-template-columns: 1fr; border-radius: 28px 28px 0 0; border-bottom: 0; touch-action: pan-x; }
+	.has-img .lpop__media { min-height: 0; aspect-ratio: 16 / 10; max-height: 34svh; }
+	.is-image-only .lpop__media img { width: 100%; max-height: calc(86svh - var(--lpop-btn, 0px)); object-fit: cover; }
+	.lpop__body { padding: 26px 22px calc(18px + env(safe-area-inset-bottom)); }
+	.is-image-only .lpop__body { padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
+	.lpop__grip { display: block; position: absolute; z-index: 2; top: 8px; left: 50%; translate: -50% 0; width: 40px; height: 4px; border-radius: 2px; background: var(--line-2); }
+	.has-img .lpop__grip, .is-image-only .lpop__grip { background: rgba(255, 255, 255, .75); }
+	.has-img .lpop__close { background: rgba(0, 0, 0, .45); color: #fff; }
+	.lpop__title { font-size: 26px; }
+}

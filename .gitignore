@@ -1,0 +1,9 @@
+# logs and caches written while testing locally
+*.log
+app/wp-content/cache/
+app/wp-content/upgrade/
+app/wp-content/uploads/wc-logs/
+.vite-hot
+# local notes with passwords never go to GitHub
+*.local.md
+.env

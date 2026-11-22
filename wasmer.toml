@@ -1,0 +1,30 @@
+# The package for a `wasmer deploy` from this folder. It uses the same layout as the Wasmer
+# dashboard's GitHub build: the repo at /app, WordPress served from /app/app, the demo
+# database at /app/db/yasujshoes.sql (read by app/wasmer-db-import.php on the first visit).
+# No router script: for an address that is not a file, such as /shop/, PHP's built-in
+# server falls back to /app/app/index.php, i.e. WordPress.
+[package]
+entrypoint = "run"
+
+[dependencies]
+"php/php-eh" = "=8.3.404-beta.4"
+
+[fs]
+"/app" = "."
+
+[[command]]
+name = "run"
+module = "php/php-eh:php"
+runner = "wasi"
+[command.annotations.wasi]
+main-args = [
+  "-t", "/app/app",
+  "-S", "0.0.0.0:8080",
+  "-d", "memory_limit=256M",
+  "-d", "max_execution_time=300",
+  "-d", "max_input_time=300",
+  "-d", "max_input_vars=4096",
+  "-d", "upload_max_filesize=64M",
+  "-d", "post_max_size=64M",
+  "-d", "display_errors=0",
+]
